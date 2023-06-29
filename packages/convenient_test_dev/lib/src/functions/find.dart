@@ -30,30 +30,35 @@ extension ExtFinder on Finder {
   Future<void> should(Matcher matcher, {String? reason}) async =>
       TFinderCommand.auto(this).should(matcher, reason: reason);
 
-  Future<void> replaceText(String text) => TFinderCommand.auto(this).replaceText(text);
+  Future<void> replaceText(String text, {bool settle = false}) =>
+      TFinderCommand.auto(this).replaceText(text, settle: settle);
 
-  Future<void> enterTextWithoutReplace(String text) => TFinderCommand.auto(this).enterTextWithoutReplace(text);
+  Future<void> enterTextWithoutReplace(String text, {bool settle = false}) =>
+      TFinderCommand.auto(this).enterTextWithoutReplace(text, settle: settle);
 
-  Future<void> tap({bool warnIfMissed = true}) => TFinderCommand.auto(this).tap(warnIfMissed: warnIfMissed);
+  Future<void> tap({bool warnIfMissed = true, bool settle = false}) =>
+      TFinderCommand.auto(this).tap(warnIfMissed: warnIfMissed, settle: settle);
 
-  Future<void> longPress({bool warnIfMissed = true}) => TFinderCommand.auto(this).longPress(warnIfMissed: warnIfMissed);
+  Future<void> longPress({bool warnIfMissed = true, bool settle = false}) =>
+      TFinderCommand.auto(this).longPress(warnIfMissed: warnIfMissed, settle: settle);
 
-  Future<void> drag(Offset offset, {bool warnIfMissed = true}) =>
-      TFinderCommand.auto(this).drag(offset, warnIfMissed: warnIfMissed);
+  Future<void> drag(Offset offset, {bool warnIfMissed = true, bool settle = false}) =>
+      TFinderCommand.auto(this).drag(offset, warnIfMissed: warnIfMissed, settle: settle);
 
-  Future<void> multiDrag({
-    required Offset firstDownOffset,
-    required Offset secondDownOffset,
-    required List<Offset> firstFingerOffsets,
-    required List<Offset> secondFingerOffsets,
-    bool? logMove,
-  }) =>
+  Future<void> multiDrag(
+          {required Offset firstDownOffset,
+          required Offset secondDownOffset,
+          required List<Offset> firstFingerOffsets,
+          required List<Offset> secondFingerOffsets,
+          bool? logMove,
+          bool settle = false}) =>
       TFinderCommand.auto(this).multiDrag(
         firstDownOffset: firstDownOffset,
         secondDownOffset: secondDownOffset,
         firstFingerOffsets: firstFingerOffsets,
         secondFingerOffsets: secondFingerOffsets,
         logMove: logMove,
+        settle: settle,
       );
 }
 
