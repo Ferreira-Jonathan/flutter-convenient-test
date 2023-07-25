@@ -5,13 +5,11 @@ import 'package:convenient_test_manager/misc/protobuf_extensions.dart';
 import 'package:convenient_test_manager/services/misc_flutter_service.dart';
 import 'package:convenient_test_manager/stores/highlight_store.dart';
 import 'package:convenient_test_manager/stores/home_page_store.dart';
-import 'package:convenient_test_manager/stores/video_player_store.dart';
 import 'package:convenient_test_manager_dart/stores/log_store.dart';
 import 'package:convenient_test_manager_dart/stores/suite_info_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
-import 'package:tuple/tuple.dart';
 
 class HomePageGroupEntryInfoSectionBuilder extends StaticSectionBuilder {
   final int groupEntryId;
@@ -204,7 +202,6 @@ class _TestInfoSectionBuilder extends StaticSectionBuilder {
   }
 
   Future<void> _handleTapPlayVideoButton(BuildContext context) async {
-    final videoPlayerStore = GetIt.I.get<VideoPlayerStore>();
     final logStore = GetIt.I.get<LogStore>();
     final homePageStore = GetIt.I.get<HomePageStore>();
 
@@ -222,36 +219,6 @@ class _TestInfoSectionBuilder extends StaticSectionBuilder {
     // to avoid minor time shifting causing wrong videos be included
     final searchStartTime = startTime.add(duration ~/ 10);
     final searchEndTime = endTime.subtract(duration ~/ 10);
-    final candidateVideoIds = videoPlayerStore.videoMap.findVideosAtTimeRange(searchStartTime, searchEndTime);
-    if (candidateVideoIds.isEmpty) return;
-
-    final interestVideoId = candidateVideoIds.length == 1
-        ? candidateVideoIds.single
-        : await showDialog<int>(
-            context: context,
-            builder: (_) => SimpleDialog(
-              title: const Text('Choose video'),
-              children: <Widget>[
-                ...candidateVideoIds.map((candidateVideoId) {
-                  final candidateVideo = videoPlayerStore.videoMap[candidateVideoId]!;
-
-                  return SimpleDialogOption(
-                    onPressed: () => Navigator.pop(context, candidateVideoId),
-                    child: Text('Video at ${candidateVideo.startTime} ~ ${candidateVideo.endTime}'),
-                  );
-                })
-              ],
-            ),
-          );
-    if (interestVideoId == null) return;
-
-    Log.d(_kTag, 'handleTapPlayVideoButton interestVideoId=$interestVideoId videoInfos=${videoPlayerStore.videoMap}');
-    final interestVideo = videoPlayerStore.videoMap[interestVideoId]!;
-    videoPlayerStore
-      ..activeVideoId = interestVideoId
-      ..displayRange = Tuple2(interestVideo.absoluteToVideoTime(startTime), interestVideo.absoluteToVideoTime(endTime));
-
-    homePageStore.activeSecondaryPanelTab = HomePageSecondaryPanelTab.video;
   }
 
   List<int> get logEntryIds => GetIt.I.get<LogStore>().logEntryInTest[info.id] ?? <int>[];

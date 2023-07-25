@@ -4,7 +4,6 @@ import 'package:convenient_test_manager/components/misc/rotate_animation.dart';
 import 'package:convenient_test_manager/misc/protobuf_extensions.dart';
 import 'package:convenient_test_manager/stores/highlight_store.dart';
 import 'package:convenient_test_manager/stores/home_page_store.dart';
-import 'package:convenient_test_manager/stores/video_player_store.dart';
 import 'package:convenient_test_manager_dart/stores/log_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -129,17 +128,9 @@ class HomePageLogEntryWidget extends StatelessWidget {
 
   void _handleTapOrHover(LogSubEntry interestLogSubEntry, {required bool targetState}) {
     final highlightStore = GetIt.I.get<HighlightStore>();
-    final videoPlayerStore = GetIt.I.get<VideoPlayerStore>();
 
     highlightStore.highlightLogEntryId = targetState ? logEntryId : null;
     highlightStore.highlightTestEntryId = targetState ? testEntryId : null;
-
-    if (targetState) {
-      final activeVideo = videoPlayerStore.activeVideo;
-      if (activeVideo != null) {
-        videoPlayerStore.mainPlayerController.seek(activeVideo.absoluteToVideoTime(interestLogSubEntry.timeTyped));
-      }
-    }
   }
 
   Widget _buildTitle(LogSubEntry interestLogSubEntry) {

@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:convenient_test_common_dart/convenient_test_common_dart.dart';
 import 'package:convenient_test_manager/stores/home_page_store.dart';
-import 'package:convenient_test_manager/stores/video_player_store.dart';
 import 'package:convenient_test_manager_dart/stores/highlight_store.dart';
 import 'package:convenient_test_manager_dart/stores/log_store.dart';
 import 'package:convenient_test_manager_dart/stores/suite_info_store.dart';
@@ -64,17 +63,7 @@ abstract class _HighlightStore extends HighlightStoreBase with Store {
   }
 
   _HighlightStore() {
-    _setupSyncVideoPositionToHighlight();
     _setupMakeHighlightLogEntryVisible();
-  }
-
-  void _setupSyncVideoPositionToHighlight() {
-    final videoPlayerStore = GetIt.I.get<VideoPlayerStore>();
-
-    reaction<int?>(
-      (_) => videoPlayerStore.playerPositionCorrespondingLogEntryId,
-      _handlePlayerPositionCorrespondingLogEntryIdChange,
-    );
   }
 
   void _handlePlayerPositionCorrespondingLogEntryIdChange(int? logEntryId) {

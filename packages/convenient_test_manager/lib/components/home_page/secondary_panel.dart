@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:convenient_test_manager/components/home_page/raw_log_panel.dart';
 import 'package:convenient_test_manager/components/home_page/screenshot_panel.dart';
-import 'package:convenient_test_manager/components/home_page/video_panel.dart';
 import 'package:convenient_test_manager/stores/home_page_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -74,8 +73,6 @@ class HomePageSecondaryPanel extends StatelessWidget {
         return const HomePageScreenshotPanel();
       case HomePageSecondaryPanelTab.rawLog:
         return const HomePageRawLogPanel();
-      case HomePageSecondaryPanelTab.video:
-        return const HomePageVideoPanel();
       case HomePageSecondaryPanelTab.none:
         return Container();
     }
